@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import routeUrl from './common/routeUrl/routeUrl';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FA from 'react-fontawesome'
 
 import Navbar from './layouts/Navbar'
 
@@ -15,7 +14,6 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <FA name="accusoft" />
       <Switch>
         <Route path={routeUrl.exercisesList} component={ExercisesList} />
         <Route path={routeUrl.exercisesEdit} component={ExercisesEdit} />
