@@ -114,11 +114,11 @@ const UsersTable = props => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Location</TableCell>
+                  <TableCell>User Name</TableCell>
+                  <TableCell>Full Name</TableCell>
                   <TableCell>Phone</TableCell>
-                  <TableCell>Registration date</TableCell>
+                  <TableCell>Create Date</TableCell>
+                  <TableCell>Update Date</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -139,23 +139,22 @@ const UsersTable = props => {
                     </TableCell>
                     <TableCell>
                       <div className={classes.nameContainer}>
-                        <Avatar
+                        {/* <Avatar
                           className={classes.avatar}
                           src={user.avatarUrl}
                         >
                           {getInitials(user.name)}
-                        </Avatar>
-                        <Typography variant="body1">{user.name}</Typography>
+                        </Avatar> */}
+                        <Typography variant="body1">{user.username}</Typography>
                       </div>
                     </TableCell>
-                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.fullname}</TableCell>
                     <TableCell>
-                      {user.address.city}, {user.address.state},{' '}
-                      {user.address.country}
+                      {user.phone}
                     </TableCell>
-                    <TableCell>{user.phone}</TableCell>
+                    <TableCell>{moment(user.createdAt).format('DD/MM/YYYY')}</TableCell>
                     <TableCell>
-                      {moment(user.createdAt).format('DD/MM/YYYY')}
+                      {moment(user.updatedAt).format('DD/MM/YYYY')}
                     </TableCell>
                   </TableRow>
                 ))}

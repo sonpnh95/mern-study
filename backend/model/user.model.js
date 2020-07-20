@@ -10,6 +10,9 @@ const userSchema = new Schema({
     trim: true,
     minlength: 3
   },
+  fullname: { type: String, required: true },
+  phone: { type: String, required: true },
+  password: { type: String, required: true },
 },
   {timestamps: true}
 )

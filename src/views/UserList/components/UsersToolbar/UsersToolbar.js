@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
-
+import { UserForm } from '../../components'
 import { SearchInput } from 'components';
 
 const useStyles = makeStyles(theme => ({
@@ -33,6 +33,12 @@ const UsersToolbar = props => {
 
   const classes = useStyles();
 
+  const [open, setOpen] = useState(false);
+
+  const closeModal = () => {
+    setOpen(false);
+  };
+
   return (
     <div
       {...rest}
@@ -45,6 +51,7 @@ const UsersToolbar = props => {
         <Button
           color="primary"
           variant="contained"
+          onClick={() => open ? setOpen(false) : setOpen(true) }
         >
           Add user
         </Button>
@@ -55,6 +62,7 @@ const UsersToolbar = props => {
           placeholder="Search user"
         />
       </div>
+      <UserForm open={open} handleClose={closeModal} />
     </div>
   );
 };
