@@ -27,9 +27,9 @@ const Profile = props => {
   const classes = useStyles();
 
   const user = {
-    name: 'Shen Zhi',
-    avatar: '/images/avatars/avatar_11.png',
-    bio: 'Brain Director'
+    name: 'Son Pnh',
+    avatar: '/images/avatars/my-avatar.jpg',
+    bio: 'storm'
   };
 
   return (

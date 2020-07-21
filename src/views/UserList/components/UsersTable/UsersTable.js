@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
+import EditIcon from '@material-ui/icons/Edit';
+import { UserForm } from '../../components'
 import {
   Card,
   CardActions,
@@ -16,10 +18,9 @@ import {
   TableHead,
   TableRow,
   Typography,
-  TablePagination
+  TablePagination,
+  Button
 } from '@material-ui/core';
-
-import { getInitials } from 'helpers';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -47,6 +48,8 @@ const UsersTable = props => {
   const classes = useStyles();
 
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [user_id, setUserId] = useState("");
+  const [open, setOpen] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
@@ -63,6 +66,15 @@ const UsersTable = props => {
 
     setSelectedUsers(selectedUsers);
   };
+
+  const handleEdit = (event, id) => {
+    setUserId(id)
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const handleSelectOne = (event, id) => {
     const selectedIndex = selectedUsers.indexOf(id);
@@ -119,6 +131,7 @@ const UsersTable = props => {
                   <TableCell>Phone</TableCell>
                   <TableCell>Create Date</TableCell>
                   <TableCell>Update Date</TableCell>
+                  <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -126,25 +139,19 @@ const UsersTable = props => {
                   <TableRow
                     className={classes.tableRow}
                     hover
-                    key={user.id}
-                    selected={selectedUsers.indexOf(user.id) !== -1}
+                    key={user._id}
+                    selected={selectedUsers.indexOf(user._id) !== -1}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedUsers.indexOf(user.id) !== -1}
+                        checked={selectedUsers.indexOf(user._id) !== -1}
                         color="primary"
-                        onChange={event => handleSelectOne(event, user.id)}
+                        onChange={event => handleSelectOne(event, user._id)}
                         value="true"
                       />
                     </TableCell>
                     <TableCell>
                       <div className={classes.nameContainer}>
-                        {/* <Avatar
-                          className={classes.avatar}
-                          src={user.avatarUrl}
-                        >
-                          {getInitials(user.name)}
-                        </Avatar> */}
                         <Typography variant="body1">{user.username}</Typography>
                       </div>
                     </TableCell>
@@ -152,9 +159,14 @@ const UsersTable = props => {
                     <TableCell>
                       {user.phone}
                     </TableCell>
-                    <TableCell>{moment(user.createdAt).format('DD/MM/YYYY')}</TableCell>
+                    <TableCell>
+                      {moment(user.createdAt).format('DD/MM/YYYY')}
+                    </TableCell>
                     <TableCell>
                       {moment(user.updatedAt).format('DD/MM/YYYY')}
+                    </TableCell>
+                    <TableCell>
+                      <Button onClick={event => handleEdit(event, user._id)} ><EditIcon/></Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -174,6 +186,7 @@ const UsersTable = props => {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </CardActions>
+      <UserForm user_id={user_id} open={open} handleClose={handleClose}/>
     </Card>
   );
 };

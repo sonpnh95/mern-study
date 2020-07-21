@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -6,6 +6,7 @@ import { Card, CardContent, CardActions, TextField } from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 import { blue } from '@material-ui/core/colors';
 import axios from 'axios';
 
@@ -34,14 +35,34 @@ const useStyles = makeStyles({
 });
 
 const UsersAdd = props => {
-  const { open, handleClose } = props;
+  const { open, handleClose, user_id } = props;
   const [username, setUserName] = useState("");
   const [fullname, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [isEdit, setIsEdit] = useState("");
 
   const classes = useStyles();
 
+  useEffect (() => {
+    if (user_id && isEdit === "") {
+      axios({
+        method: 'get',
+        url: `http://localhost:5000/users/${user_id}`,
+      }).then(function (response) {
+        const result = response.data
+          setUserName(result.username)
+          setFullName(result.fullname)
+          setPhone(result.phone)
+          setPassword(result.password)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        setIsEdit(user_id)
+    }
+  })
+  
   const handleClick = () => {
     let user = {
       username: username,
@@ -49,10 +70,16 @@ const UsersAdd = props => {
       phone: phone,
       password: password
     }
+    let url;
+    if (user_id) {
+      url = `http://localhost:5000/users/update/${user_id}`
+    } else {
+      url = 'http://localhost:5000/users/add'
+    }
 
     axios({
       method: 'post',
-      url: 'http://localhost:5000/users/add',
+      url: url,
       data: user
     }).then(function (response) {
         console.log(response);
@@ -105,12 +132,12 @@ const UsersAdd = props => {
         </CardContent>
         <CardActions className={classes.buttonAction}>
         <Button 
-          startIcon={<AddIcon />} 
+          startIcon={user_id ? <EditIcon /> : <AddIcon />} 
           variant="contained" 
           color="primary"
           onClick={handleClick}
         >
-          Add User
+          {user_id ? "Edit user": "Add User"}
         </Button>
         </CardActions>
       </Card>
@@ -124,4 +151,3 @@ UsersAdd.propTypes = {
 };
 
 export default UsersAdd;
-  
